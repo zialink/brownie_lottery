@@ -3,9 +3,9 @@ from brownie import Lottery, config, network
 import time
 
 
-account = get_account()
 
 def deploy_lottery():
+    account = get_account()
     lottery = Lottery.deploy(get_contract("eth_usd_price_feed").address,
      get_contract("vrf_coordinator").address,
      get_contract("link_token").address,
@@ -19,12 +19,14 @@ def deploy_lottery():
 
 
 def start_lottery():
+    account = get_account()
     lottery = Lottery[-1]
     starting_tx = lottery.startLottery({"from": account})
     starting_tx.wait(1)
     print("The lottery is started!")
 
 def enter_lottery():
+    account = get_account()
     lottery = Lottery[-1]
     value = lottery.getEntranceFee() + 100000000
     tx = lottery.enter({"from": account, "value": value})
@@ -32,6 +34,7 @@ def enter_lottery():
     print("You entered the lottery!")
 
 def end_lottery():
+    account = get_account()
     lottery = Lottery[-1]
     # fund the contract
     tx = fund_with_link(lottery.address)
